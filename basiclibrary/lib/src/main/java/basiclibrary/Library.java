@@ -3,6 +3,8 @@
  */
 package basiclibrary;
 
+import java.util.*;
+
 public class Library {
     public boolean someLibraryMethod() {
         return true;
@@ -49,5 +51,58 @@ public class Library {
             }
         }
         return arr[index];
+    }
+
+    public String analyzeWeatherData(int[][] rawData){
+        HashSet<Integer> data = new HashSet<>();
+        int lowest = 300;
+        int highest = 0;
+        for(int[] dataSet : rawData){
+            for(int datum : dataSet){
+                data.add(datum);
+                if (datum > highest){
+                    highest = datum;
+                }
+                if (datum < lowest){
+                    lowest = datum;
+                }
+            }
+        }
+        return returnFormattedWeather(highest, lowest, data);
+    }
+
+    public String returnFormattedWeather(int hi, int lo, HashSet data){
+        // stringBuilder was Ben Lieberman's idea, thanks ben
+        StringBuilder retStr = new StringBuilder();
+        retStr.append("High: " + hi + "\n");
+        retStr.append("Low: " + lo + "\n");
+        for (int i = lo; i < hi; i++){
+            if (!data.contains(i)){
+                retStr.append("Never saw temperature: " + i + "\n");
+            }
+        }
+        System.out.println();
+        return retStr.substring(0,retStr.length()-1);
+    }
+
+    public String tally(List<String> votes){
+        HashMap<String, Integer> voteCount = new HashMap<>();
+        for(String vote: votes){
+            try {
+                voteCount.put(vote, voteCount.get(vote) + 1);
+            } catch (NullPointerException npe){
+                voteCount.put(vote, 1);
+            }
+        }
+        Set<String> candidates = voteCount.keySet();
+        String winner = "Write-in";
+        int mostVotes = 0;
+        for(String candidate : candidates){
+            if(voteCount.get(candidate) > mostVotes){
+                mostVotes = voteCount.get(candidate);
+                winner = candidate;
+            }
+        }
+        return winner + " received the most votes!";
     }
 }
