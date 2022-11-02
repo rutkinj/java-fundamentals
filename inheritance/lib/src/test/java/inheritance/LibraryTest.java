@@ -3,10 +3,16 @@
  */
 package inheritance;
 
+import inheritance.place.Place;
+import inheritance.place.Restaurant;
+import inheritance.place.Shop;
+import inheritance.place.Theatre;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LibraryTest {
+
+    // REVIEW
     @Test void reviewExists() {
         String name = "Joe";
         String body = "This place mostly rules.";
@@ -25,6 +31,8 @@ class LibraryTest {
         assertEquals("Review of Joe's ⭐️⭐️⭐️⭐️ This place mostly rules. -Joe", sot.toString());
     }
 
+    // RESTAURANT
+
     @Test void restaurantExists() {
         String name = "Joe's";
         int rating = 2;
@@ -39,7 +47,9 @@ class LibraryTest {
         assertEquals("Joe's $$", sot.toString());
     }
 
-    @Test void reviewAdding(){
+    // REVIEWS
+
+    @Test void reviewRestaurant(){
         Restaurant sot = new Restaurant("Jude's", 2);
         Review newRev = new Review("Joe", "It gud", 5, sot);
         assertEquals( newRev.toString(), sot.reviews.get(0).toString());
@@ -51,5 +61,55 @@ class LibraryTest {
         Review newRev2 = new Review("Moe", "It bad", 1, sot);
         assertEquals(3, sot.starRating);
         assertEquals("Jude's ⭐️⭐️⭐️$$", sot.toString());
+    }
+
+    @Test void reviewShop(){
+        Shop sot = new Shop("Bob's Butter Barn", "Description of a butter barn", 4);
+        Review newRev = new Review("Eunice", "They sure got butter!", 5, sot);
+        assertEquals("They sure got butter!", newRev.body);
+        assertEquals(5, sot.starRating);
+    }
+
+    @Test void reviewTheatre(){
+        Theatre sot = new Theatre("Egyptian", 5);
+        Review newRev = new Review("Eunice", "They sure got movies!", 5, sot);
+        assertEquals("They sure got movies!", newRev.body);
+        assertEquals(5, sot.starRating);
+    }
+
+    @Test void reviewTheatreWithMovie(){
+        Theatre sot = new Theatre("Egyptian", 5);
+        Review newRev = new Review("Eunice", "They sure got movies!", 5, sot, "Butter: the Movie");
+        assertEquals("Review of Egyptian Movie seen: Butter: the Movie ⭐️⭐️⭐️⭐️⭐️ They sure got movies! -Eunice", newRev.toString());
+        assertEquals(5, sot.starRating);
+    }
+
+    // SHOP
+
+    @Test void shopConstructor(){
+        Shop sot = new Shop("Bob's Butter Barn", "Description of a butter barn", 4);
+        assertEquals("Bob's Butter Barn", sot.name);
+    }
+    @Test void shopToString(){
+        Shop sot = new Shop("Bob's Butter Barn", "Description of a butter barn", 4);
+        assertEquals("Bob's Butter Barn --- Description of a butter barn\n $$$$", sot.toString());
+    }
+
+    // THEATRE
+
+    @Test void theatreConstructor(){
+        Theatre sot = new Theatre("Egyptian", 5);
+        sot.addMovie("Night of the Hunter");
+        sot.addMovie("Beetlejuice");
+        assertEquals("Egyptian $$$$$\nNow showing:\nNight of the Hunter\nBeetlejuice", sot.toString());
+    }
+
+    @Test void theatreDeleteMovie(){
+        Theatre sot = new Theatre("Egyptian", 5);
+        sot.addMovie("Night of the Hunter");
+        sot.addMovie("Beetlejuice");
+        sot.addMovie("That's no movie!");
+        sot.deleteMovie("That's no movie!");
+        assertEquals("Egyptian $$$$$\nNow showing:\nNight of the Hunter\nBeetlejuice", sot.toString());
     }
 }

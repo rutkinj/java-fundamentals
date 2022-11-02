@@ -1,17 +1,20 @@
-package inheritance;
+package inheritance.place;
 
+
+import inheritance.Review;
+import inheritance.Reviewable;
 
 import java.util.ArrayList;
 
-public class Restaurant{
+public abstract class Place implements Reviewable {
     public String name;
     public int starRating;
     public int costRating;
-    private final String dollar = "$";
-    private final String star = "⭐️";
+    protected final String dollar = "$";
+    protected final String star = "⭐️";
     public ArrayList<Review> reviews = new ArrayList<>();
 
-    public Restaurant(String name, int costRating) {
+    public Place(String name, int costRating) {
         this.name = name;
         this.starRating = 0;
         this.costRating = costRating;
@@ -19,7 +22,7 @@ public class Restaurant{
 
     @Override
     public String toString(){
-        String reviewString = name + " " + Review.ratingString(starRating, star) + Review.ratingString(costRating, dollar);
+        String reviewString = name + " " + ratingString(starRating, star) + ratingString(costRating, dollar);
         return reviewString;
     }
 
@@ -34,5 +37,13 @@ public class Restaurant{
             total += r.rating;
         }
         starRating = total/reviews.size();
+    }
+
+    public static String ratingString(int rating, String character){
+        String retStr = "";
+        for(int i = 0; i < rating; i++){
+            retStr += character;
+        }
+        return retStr;
     }
 }
